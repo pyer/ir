@@ -2,7 +2,7 @@
 
 require "readline"
 #########################################
-IR_VERSION = "Version 1.0 (2021-03-19)"
+IR_VERSION = "Version 1.0a (2021-03-19)"
 #########################################
 # Some aliases
 #########################################
@@ -11,7 +11,7 @@ alias bye exit
 #########################################
 # History
 #########################################
-HISTORY_FILE = File.expand_path("~/.cli_history")
+HISTORY_FILE = File.expand_path("~/.ir_history")
 HISTORY_SIZE = 1000
 @history = Readline::HISTORY
 
