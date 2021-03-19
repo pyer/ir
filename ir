@@ -1,0 +1,62 @@
+#!/usr/bin/ruby2.7
+
+require "readline"
+#########################################
+IR_VERSION = "Version 1.0 (2021-03-19)"
+#########################################
+# Some aliases
+#########################################
+alias bye exit
+
+#########################################
+# History
+#########################################
+HISTORY_FILE = File.expand_path("~/.cli_history")
+HISTORY_SIZE = 1000
+@history = Readline::HISTORY
+
+def history_load
+      puts "Loading history..."
+      if File.exist?(HISTORY_FILE)
+        File.open(HISTORY_FILE) do |f|
+          f.each { |l| @history << l.chomp }
+        end
+      end
+end
+
+def history_save
+      puts "Saving history..."
+      File.open(HISTORY_FILE, 'w', 0600 ) do |f|
+        f.puts(@history.to_a[-HISTORY_SIZE..-1] || @history.to_a)
+      end
+end
+
+#########################################
+# Let's go
+#########################################
+puts IR_VERSION
+puts RUBY_DESCRIPTION
+
+history_load
+# then save on exit
+at_exit do
+  history_save
+  puts "Exit\r"
+end
+
+# Main loop
+begin
+  while line = Readline.readline('> ', true)
+    begin
+      r = eval line
+      r = 'nil' if r.nil?
+      puts '=> ' + r.to_s
+    rescue => ex
+      puts ex
+    end
+  end
+  puts
+rescue Interrupt => e
+  print "^C\n\r"
+end
+
